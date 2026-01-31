@@ -1,30 +1,30 @@
 \documentclass[11pt]{article}
-
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amssymb}
-\usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
 \usepackage{hyperref}
+\usepackage{multirow}
 \usepackage{siunitx}
 
-\title{A Modular Research Framework for Portfolio Reinforcement Learning Under Transaction Costs}
-\author{Anonymous}
-\date{\today}
+\title{Portfolio Reinforcement Learning Under Transaction Costs: A Modular Research Framework}
+\author{Noah Donovan}
+\date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We present a modular, research-grade framework for portfolio-level reinforcement learning with explicit transaction costs, deterministic market simulation, and walk-forward evaluation. The system separates data, features, environment, execution, reward, agents, and experts via strict interfaces to reduce leakage risk and improve reproducibility. We describe the architecture, execution-cost modeling, and evaluation protocol, and provide baseline agents and a minimal PPO implementation for end-to-end experiments. Empirical results are reported on real market data with walk-forward splits and an embargo to minimize leakage.
+We study portfolio-level reinforcement learning (RL) with explicit transaction costs under a walk-forward evaluation protocol. Using daily SPY/QQQ data from 2015--2024 and a causal feature set (returns and rolling volatility), we compare a minimal PPO baseline against simple portfolio baselines. We report risk-adjusted metrics and exposure diagnostics under embargoed splits. The equal-weight baseline achieves positive Sharpe, while the minimal PPO baseline underperforms with substantially higher turnover. These results are intended as a reproducible, conservative baseline rather than a claim of profitability.
 \end{abstract}
 
 \section{Introduction}
-Reinforcement learning for trading requires careful handling of causality, transaction costs, and evaluation to avoid overly optimistic conclusions. We focus on portfolio-level decision making under explicit trading costs and deterministic simulation, with clear module boundaries to support rigorous experimentation.
+Portfolio RL for trading requires strict causality, explicit transaction costs, and leakage-resistant evaluation. We present a modular framework with deterministic simulation and walk-forward evaluation, suitable for reproducible research and skeptical review.
 
-\textbf{Contributions.} (i) A modular financial RL research library with explicit transaction cost modeling and deterministic execution; (ii) a leakage-safe feature pipeline and walk-forward evaluation with embargo; (iii) baseline agents and a minimal PPO scaffold for reproducible research.
+\textbf{Contributions.} (i) A modular financial RL library with explicit cost modeling and deterministic execution; (ii) a leakage-safe feature pipeline and walk-forward evaluation with embargo; (iii) baseline agents and a minimal PPO scaffold as a conservative research baseline.
 
 \section{Related Work}
-We position this framework relative to prior work in financial RL, portfolio management, and robust backtesting. We emphasize prevention of lookahead bias, explicit cost modeling, and evaluation under walk-forward protocols.
+We position this framework relative to prior work in financial RL, portfolio management, and robust backtesting, emphasizing prevention of lookahead bias, explicit cost modeling, and evaluation under walk-forward protocols.
 
 \section{System Architecture}
 The framework is decomposed into data, features, environment, execution, reward, agents, and experts. Each module exposes a strict interface to avoid cross-layer leakage.
@@ -38,19 +38,20 @@ The portfolio environment executes target-weight actions at time $t$ using a det
 \subsection{Agents and PPO Baseline}
 Agents output portfolio target weights. We provide baseline agents (cash-only, equal-weight, hold) and a minimal PPO implementation with a linear Gaussian policy and value head, designed for reproducibility rather than performance.
 
-\section{Evaluation Protocol}
-We adopt walk-forward evaluation with an embargo gap to reduce leakage. Splits are defined by a training window, an embargo, and a forward test window. Metrics include cumulative return, max drawdown, realized volatility, Sharpe, Sortino, and Calmar ratios, plus exposure and turnover diagnostics.
+\section{Experimental Protocol}
+We adopt walk-forward evaluation with an embargo gap to reduce leakage. Splits are defined by a training window, an embargo, and a forward test window. Metrics include cumulative return, max drawdown, realized volatility, Sharpe, Sortino, and Calmar ratios, plus exposure and turnover diagnostics. We also report bootstrap confidence intervals (CIs) for mean Sharpe and cumulative return across splits.
 
-\section{Experiments}
-This section describes datasets, preprocessing, and experimental setup. Results use real market data and walk-forward splits with embargo.
+\section{Data and Features}
+We use daily OHLCV data for \texttt{SPY} and \texttt{QQQ} from 2015-01-02 to 2024-12-31 (2516 trading days), obtained from the Stooq public dataset. We align assets by the intersection of available trading dates and use raw OHLCV values without additional corporate action adjustments. The feature set is the concatenation of 1-day causal returns and 10-day rolling volatility.
 
-\subsection{Datasets and Preprocessing}
-We use daily OHLCV data for \texttt{SPY} and \texttt{QQQ} from 2015-01-02 to 2024-12-31 (2516 trading days), obtained from the Stooq public dataset. We align assets by the intersection of available trading dates and use the raw OHLCV values without additional corporate action adjustments. The aligned dataset is converted to a multivariate array for the environment.
+\section{Environment and Execution Model}
+The portfolio environment executes target-weight actions at time $t$ using the current bar price with proportional commission and slippage (5 bps each). Rewards are log returns with explicit transaction cost penalties.
 
-\subsection{Training and Evaluation Setup}
-We evaluate using walk-forward splits with a 504-day training window (\textasciitilde2 years), a 5-day embargo, and a 252-day test window (\textasciitilde1 year), advancing by 252 days per split. The execution model uses proportional commission and slippage (5 bps each). Features are the concatenation of 1-day causal returns and 10-day rolling volatility. The PPO baseline uses a linear Gaussian policy with 5 training iterations and rollout length 64 per split. All results are averaged across splits.
+\section{Methods}
+We evaluate baseline agents (cash-only and equal-weight) and a minimal PPO policy with a linear Gaussian policy and value head. The PPO training is intentionally lightweight (5 iterations, rollout length 64) to provide a conservative baseline rather than a performance-optimized result.
 
-\subsection{Results}
+\section{Results}
+\noindent\textbf{Summary of findings.} On this dataset, the equal-weight baseline achieves positive Sharpe with low turnover; the minimal PPO baseline underperforms with substantially higher turnover and modest risk-adjusted metrics.
 \begin{table}[h]
 \centering
 \caption{Walk-forward performance summary (mean across splits).}
@@ -61,18 +62,20 @@ Agent & Cum. Ret. & Max DD & Sharpe & Sortino & Calmar & Mean Turnover \\
 \midrule
 Cash-only & 0.000 & 0.000 & 0.00 & 0.00 & 0.00 & 0.0000 \\
 Equal-weight & 0.178 & 0.155 & 1.29 & 1.72 & 2.94 & 0.0061 \\
-PPO & -0.008 & 0.147 & 0.30 & 0.34 & 0.76 & 0.5767 \\
+PPO (minimal) & -0.008 & 0.147 & 0.30 & 0.34 & 0.76 & 0.5767 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\noindent Bootstrap CIs for mean Sharpe and mean cumulative return across splits are reported in the experiment summaries and can be reproduced from the exported JSON files.
+
 \section{Discussion}
-We discuss the importance of explicit cost modeling, leakage-safe features, and walk-forward evaluation. We also outline limitations of the baseline PPO and directions for more realistic execution modeling.
+The results highlight the importance of explicit cost modeling, leakage-safe features, and conservative evaluation. The minimal PPO baseline trades frequently and underperforms a simple equal-weight portfolio, underscoring that stronger training and richer models are required before drawing performance conclusions.
 
 \section{Limitations and Future Work}
 Future work includes richer execution models, alternative reward formulations, and more expressive policy classes. We emphasize the need to validate improvements under walk-forward protocols with embargo and realistic transaction costs.
 
 \section{Conclusion}
-We introduced a modular, deterministic financial RL framework with explicit transaction costs and a walk-forward evaluation protocol. The system is designed for reproducible research and provides baseline agents and a minimal PPO scaffold.
+We introduced a modular, deterministic financial RL framework with explicit transaction costs and a walk-forward evaluation protocol. The system is designed for reproducible research and provides baseline agents and a minimal PPO scaffold. The current results serve as a conservative baseline for future, more extensive experimentation.
 
 \end{document}
