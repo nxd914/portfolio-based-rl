@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "agent": "cash",
+    "embargo": 5,
+    "n_steps": 2516,
+    "seed": 0,
+    "step_size": 252,
+    "test_size": 252,
+    "train_size": 504
+  },
+  "summary": {
+    "fields_mean": {
+      "final_cash": 1000000.0,
+      "final_portfolio_value": 1000000.0,
+      "mean_gross_exposure": 0.0,
+      "mean_net_exposure": 0.0,
+      "mean_transaction_cost": 0.0,
+      "mean_turnover": 0.0,
+      "mean_weights_sum": 0.0
+    },
+    "fields_std": {
+      "final_cash": 0.0,
+      "final_portfolio_value": 0.0,
+      "mean_gross_exposure": 0.0,
+      "mean_net_exposure": 0.0,
+      "mean_transaction_cost": 0.0,
+      "mean_turnover": 0.0,
+      "mean_weights_sum": 0.0
+    },
+    "metrics_mean": {
+      "calmar_ratio": 0.0,
+      "ci_cumulative_return": [
+        0.0,
+        0.0
+      ],
+      "ci_sharpe": [
+        0.0,
+        0.0
+      ],
+      "cumulative_return": 0.0,
+      "max_drawdown": 0.0,
+      "mean_cumulative_return": 0.0,
+      "mean_sharpe": 0.0,
+      "realized_volatility": 0.0,
+      "sharpe_ratio": 0.0,
+      "sortino_ratio": 0.0
+    },
+    "metrics_std": {
+      "calmar_ratio": 0.0,
+      "cumulative_return": 0.0,
+      "max_drawdown": 0.0,
+      "realized_volatility": 0.0,
+      "sharpe_ratio": 0.0,
+      "sortino_ratio": 0.0
+    }
+  }
+}

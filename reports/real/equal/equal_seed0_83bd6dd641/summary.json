@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "agent": "equal",
+    "embargo": 5,
+    "n_steps": 2516,
+    "seed": 0,
+    "step_size": 252,
+    "test_size": 252,
+    "train_size": 504
+  },
+  "summary": {
+    "fields_mean": {
+      "final_cash": -2.165352845304727,
+      "final_portfolio_value": 1178295.3650802388,
+      "mean_gross_exposure": 1.000006091978315,
+      "mean_net_exposure": 1.000006091978315,
+      "mean_transaction_cost": 6.191212878166695,
+      "mean_turnover": 0.006087982010173342,
+      "mean_weights_sum": 1.000006091978315
+    },
+    "fields_std": {
+      "final_cash": 1.4920125060072715,
+      "final_portfolio_value": 195597.63535585976,
+      "mean_gross_exposure": 5.810235276524133e-07,
+      "mean_net_exposure": 5.810235276524133e-07,
+      "mean_transaction_cost": 0.5259305518315487,
+      "mean_turnover": 0.0005810193756426294,
+      "mean_weights_sum": 5.810235276524133e-07
+    },
+    "metrics_mean": {
+      "calmar_ratio": 2.937227929449424,
+      "ci_cumulative_return": [
+        0.023566318394169717,
+        0.3067777394233101
+      ],
+      "ci_sharpe": [
+        0.3799838595662995,
+        2.161580297498851
+      ],
+      "cumulative_return": 0.17771168781561308,
+      "max_drawdown": 0.15457928971420612,
+      "mean_cumulative_return": 0.17771168781561308,
+      "mean_sharpe": 1.2891070398660085,
+      "realized_volatility": 0.19151785076769365,
+      "sharpe_ratio": 1.2891070398660085,
+      "sortino_ratio": 1.7248917280124487
+    },
+    "metrics_std": {
+      "calmar_ratio": 3.3090957679060584,
+      "cumulative_return": 0.19766514062879675,
+      "max_drawdown": 0.10198063595968038,
+      "realized_volatility": 0.08385184072151262,
+      "sharpe_ratio": 1.2365273669526273,
+      "sortino_ratio": 1.7435543874132793
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "agent": "equal",
+    "embargo": 5,
+    "n_steps": 2516,
+    "seed": 0,
+    "step_size": 252,
+    "test_size": 252,
+    "train_size": 504
+  },
+  "n_splits": 7,
+  "seed": 0,
+  "split_params": {
+    "embargo": 5,
+    "step_size": 252,
+    "test_size": 252,
+    "train_size": 504
+  }
+}
