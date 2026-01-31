@@ -1,0 +1,20 @@
+[project]
+name = "portfolio-based-rl"
+version = "0.1.0"
+description = "Research-grade portfolio reinforcement learning framework (market simulation only)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
